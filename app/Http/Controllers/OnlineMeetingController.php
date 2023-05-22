@@ -9,7 +9,8 @@ class OnlineMeetingController extends Controller
 {
     public function index(Request $request)
     {
-        $onlineMeetings = OnlineMeetingManagement::latest()->paginate($request->per_page ?? 25);
+        // $onlineMeetings = OnlineMeetingManagement::latest()->paginate($request->per_page ?? 25);
+        $onlineMeetings = OnlineMeetingManagement::all();
 
         return response()->json([
             'status' => 'Success',

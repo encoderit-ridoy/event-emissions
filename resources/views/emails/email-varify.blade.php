@@ -8,9 +8,6 @@
     <title>Email Confirmation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type="text/css">
-        /**
-   * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
-   */
         @media screen {
             @font-face {
                 font-family: 'Source Sans Pro';
@@ -27,11 +24,6 @@
             }
         }
 
-        /**
-   * Avoid browser level font resizing.
-   * 1. Windows Mobile
-   * 2. iOS / OSX
-   */
         body,
         table,
         td,
@@ -42,25 +34,16 @@
             /* 2 */
         }
 
-        /**
-   * Remove extra space added to tables and cells in Outlook.
-   */
         table,
         td {
             mso-table-rspace: 0pt;
             mso-table-lspace: 0pt;
         }
 
-        /**
-   * Better fluid images in Internet Explorer.
-   */
         img {
             -ms-interpolation-mode: bicubic;
         }
 
-        /**
-   * Remove blue links for iOS devices.
-   */
         a[x-apple-data-detectors] {
             font-family: inherit !important;
             font-size: inherit !important;
@@ -70,9 +53,6 @@
             text-decoration: none !important;
         }
 
-        /**
-   * Fix centering issues in Android 4.4.
-   */
         div[style*="margin: 16px 0;"] {
             margin: 0 !important;
         }
@@ -84,9 +64,6 @@
             margin: 0 !important;
         }
 
-        /**
-   * Collapse table borders to avoid space between cells.
-   */
         table {
             border-collapse: collapse !important;
         }
@@ -108,96 +85,53 @@
 
 <body style="background-color: #e9ecef;">
 
-    <!-- start preheader -->
     <div class="preheader"
         style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
         A preheader is the short summary text that follows the subject line when an email is viewed in the inbox.
     </div>
-    <!-- end preheader -->
-
-    <!-- start body -->
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
 
-        <!-- start logo -->
         <tr>
             <td align="center" bgcolor="#e9ecef">
-                <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td align="center" valign="top">
                             <a href="https://demo.chonburiinterww.com/event-emission/" target="_blank"
                                 style="display: inline-block;">
-                                <img src="http://192.168.50.70:8001/storage/logo/Company Logo.png" alt="Logo"
+                                <img src="{{asset("/image/product_logo.png")}}" alt="Logo"
                                     border="0" width="48"
                                     style="display: block; width: 150px; max-width: 150px; min-width: 48px; height:130px;">
                             </a>
                         </td>
                     </tr>
                 </table>
-                <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
             </td>
         </tr>
-        <!-- end logo -->
-
-        <!-- start hero -->
         <tr>
             <td align="center" bgcolor="#e9ecef">
-                <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td align="left" bgcolor="#ffffff"
                             style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                             <h1
                                 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                                Confirm Your Email Address</h1>
+                                イベント炭素簿へようこそ</h1>
                         </td>
                     </tr>
                 </table>
-                <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
             </td>
         </tr>
-        <!-- end hero -->
-
-        <!-- start copy block -->
         <tr>
             <td align="center" bgcolor="#e9ecef">
-                <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
 
-                    <!-- start copy -->
                     <tr>
                         <td align="left" bgcolor="#ffffff"
                             style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                            <p style="margin: 0;">Tap the button below to confirm your email address. If you didn't
-                                create an account with <a
-                                    href="https://demo.chonburiinterww.com/event-emission/">Event-Emissions</a>, you can
-                                safely delete
-                                this email.</p>
+                            <p style="margin: 0;">お客様のメールアドレスを確認するために、次のボタンをクリックしてください。
+</p>
                         </td>
                     </tr>
-                    <!-- end copy -->
-                    {{ $token }}
-                    <!-- start button -->
                     <tr>
                         <td align="left" bgcolor="#ffffff">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -208,8 +142,7 @@
                                                 <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
                                                     <a href="{{ url($redirect_url) . '?token=' . $token }}"
                                                         target="_blank"
-                                                        style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Varify
-                                                        Your Email</a>
+                                                        style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">メールアドレスを確認する</a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -218,50 +151,25 @@
                             </table>
                         </td>
                     </tr>
-                    <!-- end button -->
-
-                    <!-- start copy -->
-                    {{-- <tr>
-                        <td align="left" bgcolor="#ffffff"
-                            style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                            <p style="margin: 0;">If that doesn't work, copy and paste the following link in your
-                                browser:</p>
-                            <p style="margin: 0;"><a href="https://blogdesire.com"
-                                    target="_blank">https://blogdesire.com/xxx-xxx-xxxx</a></p>
-                        </td>
-                    </tr> --}}
-                    <!-- end copy -->
-
-                    <!-- start copy -->
                     <tr>
                         <td align="left" bgcolor="#ffffff"
                             style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf">
-                            <p style="margin: 0;">Cheers,<br> Event-Emissions Team</p>
+                            <p style="margin: 0;">*本メールは送信専用となっております。本メールへの返信はご遠慮願います。問い合わせについては下記掲載問い合わせ先にお願いします。
+</p>
+<hr>
+<p>【イベント炭素簿に関する問い合わせ先】
+<br>株式会社テックシンカー
+<br>E-mail : <span style="color:rgb(77, 144, 231)"><u>service@offemission.com</u></span></p>
+<hr>
                         </td>
                     </tr>
-                    <!-- end copy -->
 
                 </table>
-                <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
             </td>
         </tr>
-        <!-- end copy block -->
-
-        <!-- start footer -->
-        <tr>
+        {{-- <tr>
             <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
-                <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-
-                    <!-- start permission -->
                     <tr>
                         <td align="center" bgcolor="#e9ecef"
                             style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
@@ -270,31 +178,11 @@
                                 for registration you can safely delete this email.</p>
                         </td>
                     </tr>
-                    <!-- end permission -->
-
-                    <!-- start unsubscribe -->
-                    {{-- <tr>
-                        <td align="center" bgcolor="#e9ecef"
-                            style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-                            <p style="margin: 0;">To stop receiving these emails, you can <a
-                                    href="https://www.blogdesire.com" target="_blank">unsubscribe</a> at any time.</p>
-                            <p style="margin: 0;">Paste 1234 S. Broadway St. City, State 12345</p>
-                        </td>
-                    </tr> --}}
-                    <!-- end unsubscribe -->
-
                 </table>
-                <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
             </td>
-        </tr>
-        <!-- end footer -->
+        </tr> --}}
 
     </table>
-    <!-- end body -->
 
 </body>
 

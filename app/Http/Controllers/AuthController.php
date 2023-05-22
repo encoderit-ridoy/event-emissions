@@ -43,7 +43,7 @@ class AuthController extends Controller
         Mail::to($user->email)->send(new EmailVarify($user->email_varify_token, $request->redirect_url));
         return response()->json([
             // 'token' => $user->createToken('Api Token')->plainTextToken
-            'message' => 'Email has been sent to your email address. Please varify your email address',
+            'message' => '確認用のメールを送信しました！メール受信箱を確認して説明に従ってください',
         ], 200);
     }
 
@@ -119,7 +119,7 @@ class AuthController extends Controller
             Mail::to($user->email)->send(new ForgotPasswordMail($token, $request->redirect_url));
 
             return response()->json([
-                'message' => 'Password reset link sent to the email.'
+                'message' => 'メールが送信されました'
             ], 200);
         } else {
             abort(404, 'User associated with this email is not found.');
@@ -182,11 +182,11 @@ class AuthController extends Controller
             'token' => 'required|exists:users,email_varify_token',
         ]);
 
-        User::where('email_varify_token', $request->token)
-            ->update(['email_verified_at' => now(), 'email_varify_token' => null, 'status' => 'active']);
+        $user =  User::where('email_varify_token', $request->token)->firstOrFail();
+        $user->update(['email_verified_at' => now(), 'email_varify_token' => null, 'status' => 'active']);
 
         return response()->json([
-            'message' => 'Email varified successfully.'
+            'token' => $user->createToken('Api Token')->plainTextToken,
         ]);
     }
 }

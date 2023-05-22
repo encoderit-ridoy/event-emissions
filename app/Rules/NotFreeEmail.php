@@ -37,6 +37,6 @@ class NotFreeEmail implements Rule
      */
     public function message()
     {
-        return 'You can not use free email.';
+        return 'フリーメールアドレスでのご登録はできません。';
     }
 }

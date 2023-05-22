@@ -16,7 +16,7 @@ class CreateContentManagementTable extends Migration
         Schema::create('content_management', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->text('content');
+            $table->longText('content');
             $table->timestamps();
         });
     }

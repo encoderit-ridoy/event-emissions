@@ -21,6 +21,7 @@ class CreateEventOnlineMeetingTable extends Migration
             $table->foreignIdFor(OnlineMeetingManagement::class);
             $table->integer('no_of_pc')->nullable();
             $table->float('times', 8, 2)->nullable();
+            $table->text('om_assumption')->nullable();
             $table->timestamps();
         });
     }

@@ -14,7 +14,9 @@ class EventController extends Controller
 
         $user = Auth::user();
         if ($user->hasRole('user')) {
-            $query->where('user_id', $user->id);
+            $query->whereHas('user', function ($q) use ($user) {
+                return $q->where('company_id', $user->company->id);
+            });
         } else {
             $query->when($request->has('user_id'), function ($q) use ($request) {
                 $q->where('user_id', $request->user_id);
@@ -37,10 +39,6 @@ class EventController extends Controller
             'starting_date'    => 'required',
             'end_date'         => 'required',
             'people_in_charge' => 'required|string',
-            'mr_assumption'    => 'sometimes|required',
-            'tp_assumption'    => 'sometimes|required',
-            'om_assumption'    => 'sometimes|required',
-            'oa_assumption'    => 'sometimes|required',
             'meeting_rooms'    => 'sometimes|required|array',
             'trasportations'   => 'sometimes|required|array',
             'online_meetings'  => 'sometimes|required|array',
@@ -49,20 +47,27 @@ class EventController extends Controller
         $validator = $request->validate($validate_data);
         $event = Event::create($validator);
         if ($event) {
-            foreach ($request->meeting_rooms as $room) {
-                $event->meetingRooms()->attach($room['id'], ['meeting_time' => $room['times']]);
+            if ($request->has('meeting_rooms')) {
+                foreach ($request->meeting_rooms as $room) {
+                    $event->meetingRooms()->attach($room['id'], ['meeting_time' => $room['times'], 'mr_assumption' => $room['mr_assumption']]);
+                }
             }
-            foreach ($request->trasportations as $transport) {
-                $event->transportations()->attach($transport['id'], ['no_of_people' => $transport['people'], 'transportation_fee' => $transport['fee']]);
+            if ($request->has('trasportations')) {
+                foreach ($request->trasportations as $transport) {
+                    $event->transportations()->attach($transport['id'], ['no_of_people' => $transport['people'], 'transportation_fee' => $transport['fee'], 'tp_assumption' => $transport['tp_assumption']]);
+                }
             }
-            foreach ($request->online_meetings as $online) {
-                $event->onlineMeetings()->attach($online['id'], ['no_of_pc' => $online['pc'], 'times' => $online['times']]);
+            if ($request->has('online_meetings')) {
+                foreach ($request->online_meetings as $online) {
+                    $event->onlineMeetings()->attach($online['id'], ['no_of_pc' => $online['pc'], 'times' => $online['times'], 'om_assumption' => $online['om_assumption']]);
+                }
             }
-            foreach ($request->other_activities as $activities) {
-                $event->otherActivities()->attach($activities['id'], ['no_of_people' => $activities['people'], 'no_of_nights' => $activities['nights'] ?? null]);
+            if ($request->has('other_activities')) {
+                foreach ($request->other_activities as $activities) {
+                    $event->otherActivities()->attach($activities['id'], ['no_of_people' => $activities['people'], 'no_of_nights' => $activities['night'] ?? null, 'oa_assumption' => $activities['oa_assumption']]);
+                }
             }
         }
-
         return $this->getSingleData($event->id, 'Event Created Successfully.', 201);
     }
 
@@ -76,10 +81,6 @@ class EventController extends Controller
             'starting_date'    => 'required',
             'end_date'         => 'required',
             'people_in_charge' => 'required|string',
-            'mr_assumption'    => 'sometimes|required',
-            'tp_assumption'    => 'sometimes|required',
-            'om_assumption'    => 'sometimes|required',
-            'oa_assumption'    => 'sometimes|required',
             'meeting_rooms'    => 'sometimes|required|array',
             'trasportations'   => 'sometimes|required|array',
             'online_meetings'  => 'sometimes|required|array',
@@ -90,17 +91,37 @@ class EventController extends Controller
         $event->update($validator);
 
         if ($event) {
-            foreach ($request->meeting_rooms as $room) {
-                $event->meetingRooms()->sync($room['id'], ['meeting_time' => $room['times']]);
+            if ($request->has('meeting_rooms')) {
+                $event->meetingRooms()->detach();
+                foreach ($request->meeting_rooms as $room) {
+                    $event->meetingRooms()->attach($room['id'], ['meeting_time' => $room['times'], 'mr_assumption' => $room['mr_assumption']]);
+                }
+            } else {
+                $event->meetingRooms()->detach();
             }
-            foreach ($request->trasportations as $transport) {
-                $event->transportations()->sync($transport['id'], ['no_of_people' => $transport['people'], 'transportation_fee' => $transport['fee']]);
+            if ($request->has('trasportations')) {
+                $event->transportations()->detach();
+                foreach ($request->trasportations as $transport) {
+                    $event->transportations()->attach($transport['id'], ['no_of_people' => $transport['people'], 'transportation_fee' => $transport['fee'], 'tp_assumption' => $transport['tp_assumption']]);
+                }
+            } else {
+                $event->transportations()->detach();
             }
-            foreach ($request->online_meetings as $online) {
-                $event->onlineMeetings()->sync($online['id'], ['no_of_pc' => $online['pc'], 'times' => $online['times']]);
+            if ($request->has('online_meetings')) {
+                $event->onlineMeetings()->detach();
+                foreach ($request->online_meetings as $online) {
+                    $event->onlineMeetings()->attach($online['id'], ['no_of_pc' => $online['pc'], 'times' => $online['times'], 'om_assumption' => $online['om_assumption']]);
+                }
+            } else {
+                $event->onlineMeetings()->detach();
             }
-            foreach ($request->other_activities as $activities) {
-                $event->otherActivities()->sync($activities['id'], ['no_of_people' => $activities['people'], 'no_of_nights' => $activities['nights'] ?? null]);
+            if ($request->has('other_activities')) {
+                $event->otherActivities()->detach();
+                foreach ($request->other_activities as $activities) {
+                    $event->otherActivities()->attach($activities['id'], ['no_of_people' => $activities['people'], 'no_of_nights' => $activities['night'] ?? null, 'oa_assumption' => $activities['oa_assumption']]);
+                }
+            } else {
+                $event->otherActivities()->detach();
             }
         }
         return $this->getSingleData($event->id, 'Event Updated Successfully.', 200);
@@ -150,6 +171,7 @@ class EventController extends Controller
             $calculation = $meetingRoom->electicity_parameter * $meetingRoom->pivot->meeting_time;
             $mr_emissions[] = array(
                 'id' => $meetingRoom->id,
+                'pivot' => $meetingRoom->pivot,
                 'result' => $calculation
             );
             $total_mr_emissions += $calculation;
@@ -158,6 +180,7 @@ class EventController extends Controller
             $calculation = $transport->parameter * $transport->pivot->no_of_people * $transport->pivot->transportation_fee;
             $tp_emissions[] = array(
                 'id' => $transport->id,
+                'pivot' => $transport->pivot,
                 'result' => $calculation
             );
             $total_tp_emissions += $calculation;
@@ -166,6 +189,7 @@ class EventController extends Controller
             $calculation = $onlineMeeting->parameter * $onlineMeeting->pivot->no_of_pc * $onlineMeeting->pivot->times;
             $om_emissions[] = array(
                 'id' => $onlineMeeting->id,
+                'pivot' => $onlineMeeting->pivot,
                 'result' => $calculation
             );
             $total_om_emissions += $calculation;
@@ -178,17 +202,18 @@ class EventController extends Controller
 
             $oa_emissions[] = array(
                 'id' => $activities->id,
+                'pivot' => $activities->pivot,
                 'result' => $calculation
             );
             $total_oa_emissions += $calculation;
         }
 
         $event_wise_emissions[] = array(
-            'meetingRoom_emissions' => number_format($total_mr_emissions),
-            'transport_emissions' => number_format($total_tp_emissions),
-            'onlineMeeting_emissions' => number_format($total_om_emissions),
-            'otherActivities_emissions' => number_format($total_oa_emissions),
-            'total' => number_format($total_mr_emissions + $total_tp_emissions + $total_om_emissions + $total_oa_emissions)
+            'meetingRoom_emissions' => $total_mr_emissions,
+            'transport_emissions' => $total_tp_emissions,
+            'onlineMeeting_emissions' => $total_om_emissions,
+            'otherActivities_emissions' => $total_oa_emissions,
+            'total' => $total_mr_emissions + $total_tp_emissions + $total_om_emissions + $total_oa_emissions
         );
 
 

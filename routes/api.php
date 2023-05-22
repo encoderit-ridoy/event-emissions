@@ -89,6 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('dashboard')->group(function () {
         Route::get('total-emissions', [DashboardController::class, 'totalEmissions']);
+        Route::get('events-data', [DashboardController::class, 'eventsData']);
     });
 
     Route::prefix('content')->group(function () {

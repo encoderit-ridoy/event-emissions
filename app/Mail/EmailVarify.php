@@ -30,7 +30,7 @@ class EmailVarify extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Email Varification')
+        return $this->subject('イベント炭素簿へようこそ')
             ->view('emails.email-varify', ['token' => $this->token, 'redirect_url' => $this->redirect_url]);
     }
 }

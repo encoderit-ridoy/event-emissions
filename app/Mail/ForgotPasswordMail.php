@@ -30,7 +30,7 @@ class ForgotPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Password Reset Link')
+        return $this->subject('パスワードリセットのお知らせ')
             ->view('emails.reset-password', ['token' => $this->token, 'redirect_url' => $this->redirect_url]);
     }
 }

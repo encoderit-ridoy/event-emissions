@@ -20,6 +20,7 @@ class CreateEventMeetingRoomTable extends Migration
             $table->foreignIdFor(Event::class);
             $table->foreignIdFor(MeetingRoomManagement::class);
             $table->float('meeting_time', 8, 2)->nullable();
+            $table->text('mr_assumption')->nullable();
             $table->timestamps();
         });
     }

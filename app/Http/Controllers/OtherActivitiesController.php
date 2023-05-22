@@ -9,7 +9,8 @@ class OtherActivitiesController extends Controller
 {
     public function index(Request $request)
     {
-        $otherActivities = OtherActivitiesManagement::latest()->paginate($request->per_page ?? 25);
+        // $otherActivities = OtherActivitiesManagement::latest()->paginate($request->per_page ?? 25);
+        $otherActivities = OtherActivitiesManagement::all();
 
         return response()->json([
             'status' => 'Success',

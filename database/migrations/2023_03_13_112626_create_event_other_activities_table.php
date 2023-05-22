@@ -21,6 +21,7 @@ class CreateEventOtherActivitiesTable extends Migration
             $table->foreignIdFor(OtherActivitiesManagement::class);
             $table->integer('no_of_nights')->nullable();
             $table->integer('no_of_people')->nullable();
+            $table->text('oa_assumption')->nullable();
             $table->timestamps();
         });
     }

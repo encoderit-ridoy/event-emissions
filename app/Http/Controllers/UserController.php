@@ -30,7 +30,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validate_data = [
-            'company_name'           => 'required|string',
+            'company_id'             => 'sometimes|required|exists:companies,id',
+            'company_name'           => 'sometimes|required|string',
             'name'                   => 'required|string',
             'phone'                  => 'sometimes|required|regex:/^([0-9\s\-\+\(\)]*)$/',
             'email'                  => 'required|email|unique:users,email',
@@ -41,11 +42,13 @@ class UserController extends Controller
         ];
 
         $validator = $request->validate($validate_data);
-        $company = Company::firstOrCreate(
-            ['slug' => Str::slug($request->company_name)],
-            ['name' => $request->company_name]
-        );
-        $validator['company_id'] = $company->id;
+        if (!$request->company_id) {
+            $company = Company::firstOrCreate(
+                ['slug' => Str::slug($request->company_name)],
+                ['name' => $request->company_name]
+            );
+        }
+        $validator['company_id'] = $request->company_id ?? $company->id;
         $user = User::create($validator);
         if ($user)
             $user->roles()->attach($request->role_id);
@@ -56,7 +59,8 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $validate_data = [
-            'company_name'           => 'required|string',
+            'company_id'             => 'sometimes|required|exists:companies,id',
+            'company_name'           => 'sometimes|required|string',
             'name'                   => 'required|string',
             'phone'                  => 'sometimes|required|regex:/^([0-9\s\-\+\(\)]*)$/',
             'email'                  => 'required|email|unique:users,email,' . $request->user_id,
@@ -67,10 +71,10 @@ class UserController extends Controller
         $validator = $request->validate($validate_data);
 
         $user = User::findOrFail($request->user_id);
-        Company::findOrFail($user->company_id)->update([
-            'name' => $request->company_name,
-            'slug' => Str::slug($request->company_name),
-        ]);
+        // Company::findOrFail($user->company_id)->update([
+        //     'name' => $request->company_name,
+        //     'slug' => Str::slug($request->company_name),
+        // ]);
         $user->update($validator);
 
         return $this->getSingleUser($user->id, 'User Updated Successfully.', 200);

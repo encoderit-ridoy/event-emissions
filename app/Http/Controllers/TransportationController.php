@@ -9,7 +9,8 @@ class TransportationController extends Controller
 {
     public function index(Request $request)
     {
-        $transportations = TransportationManagement::latest()->paginate($request->per_page ?? 25);
+        // $transportations = TransportationManagement::latest()->paginate($request->per_page ?? 25);
+        $transportations = TransportationManagement::all();
 
         return response()->json([
             'status' => 'Success',

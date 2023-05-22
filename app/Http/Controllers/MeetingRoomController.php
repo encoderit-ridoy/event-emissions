@@ -9,7 +9,8 @@ class MeetingRoomController extends Controller
 {
     public function index(Request $request)
     {
-        $meetingRooms = MeetingRoomManagement::latest()->paginate($request->per_page ?? 25);
+        // $meetingRooms = MeetingRoomManagement::latest()->paginate($request->per_page ?? 25);
+        $meetingRooms = MeetingRoomManagement::all();
 
         return response()->json([
             'status' => 'Success',

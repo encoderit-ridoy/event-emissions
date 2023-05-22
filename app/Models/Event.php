@@ -30,21 +30,21 @@ class Event extends Model
 
     public function meetingRooms()
     {
-        return $this->belongsToMany(MeetingRoomManagement::class, 'event_meeting_room', 'event_id', 'meeting_room_management_id')->withPivot('meeting_time')->withTimestamps();
+        return $this->belongsToMany(MeetingRoomManagement::class, 'event_meeting_room', 'event_id', 'meeting_room_management_id')->withPivot('meeting_time', 'mr_assumption')->withTimestamps();
     }
 
     public function transportations()
     {
-        return $this->belongsToMany(TransportationManagement::class, 'event_transportation', 'event_id', 'transportation_management_id')->withPivot('no_of_people', 'transportation_fee')->withTimestamps();
+        return $this->belongsToMany(TransportationManagement::class, 'event_transportation', 'event_id', 'transportation_management_id')->withPivot('no_of_people', 'transportation_fee', 'tp_assumption')->withTimestamps();
     }
 
     public function onlineMeetings()
     {
-        return $this->belongsToMany(OnlineMeetingManagement::class, 'event_online_meeting', 'event_id', 'online_meeting_management_id')->withPivot('no_of_pc', 'times')->withTimestamps();
+        return $this->belongsToMany(OnlineMeetingManagement::class, 'event_online_meeting', 'event_id', 'online_meeting_management_id')->withPivot('no_of_pc', 'times', 'om_assumption')->withTimestamps();
     }
 
     public function otherActivities()
     {
-        return $this->belongsToMany(OtherActivitiesManagement::class, 'event_other_activities', 'event_id', 'other_activities_management_id')->withPivot('no_of_nights', 'no_of_people')->withTimestamps();
+        return $this->belongsToMany(OtherActivitiesManagement::class, 'event_other_activities', 'event_id', 'other_activities_management_id')->withPivot('no_of_nights', 'no_of_people', 'oa_assumption')->withTimestamps();
     }
 }

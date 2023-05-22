@@ -21,6 +21,7 @@ class CreateEventTransportationTable extends Migration
             $table->foreignIdFor(TransportationManagement::class);
             $table->integer('no_of_people')->nullable();
             $table->float('transportation_fee')->nullable();
+            $table->text('tp_assumption')->nullable();
             $table->timestamps();
         });
     }

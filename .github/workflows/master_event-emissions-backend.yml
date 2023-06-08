@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'event-emissions-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7A4D889E705C453CBEEAE8342AD9323F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CBCD5E973CD545D990730CB16148F244 }}
           package: .

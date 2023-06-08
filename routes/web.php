@@ -15,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('emails.reset-password');
+    return view('welcome');
 });
 Route::get('email-varify', [AuthController::class, 'varifyEmail']);

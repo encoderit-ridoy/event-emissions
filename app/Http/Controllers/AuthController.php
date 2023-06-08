@@ -29,6 +29,7 @@ class AuthController extends Controller
             'event_date'             => 'sometimes|required',
             'no_of_event_attendance' => 'sometimes|required',
             'role_id'                => 'required|exists:roles,id',
+            'redirect_url'           => 'required'
         ];
         $validator = $request->validate($validate_data);
         $company = Company::firstOrCreate(

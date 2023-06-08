@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 use Illuminate\Database\QueryException;
 
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -66,15 +67,15 @@ class Handler extends ExceptionHandler
                     return $this->unauthenticated($request, $e);
                 }
                 //
-                else if ($e instanceof NotFoundHttpException) {
-                    $message = $e->getMessage();
-                    $response_code = $e->getResponse()->getStatusCode();
-                }
-                //
-                else if ($e->getMessage() == "") {
-                    $message = $e->getResponse()->statusText() ?? 'Resource not found';
-                    $response_code = $e->getResponse()->getStatusCode() ?? 500;
-                }
+                // else if ($e instanceof NotFoundHttpException) {
+                //     $message = $e->getMessage();
+                //     $response_code = $e->getResponse()->getStatusCode();
+                // }
+                // //
+                // else if ($e->getMessage() == "") {
+                //     $message = $e->getResponse()->statusText() ?? 'Resource not found';
+                //     $response_code = $e->getResponse()->getStatusCode() ?? 500;
+                // }
                 //
                 else {
                     $message = $e->getMessage();

@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('index', [UserController::class, 'index']);
+Route::get('test', function () {
+    return "this is ok from api with get method";
+});
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('register', [AuthController::class, 'register']);
 
@@ -39,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
 
     Route::prefix('users')->group(function () {
+        Route::get('index', [UserController::class, 'index']);
         Route::post('store', [UserController::class, 'store']);
         Route::get('show/{id}', [UserController::class, 'getSingleUser']);
         Route::patch('update', [UserController::class, 'update']);
